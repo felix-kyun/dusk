@@ -77,7 +77,7 @@ local function copy(t)
 	return result
 end
 
-setmetatable(Dusk, {
+return setmetatable(Dusk, {
 	__index = function(collector, key)
 		if (type(key) == "number") then
 			return rawget(collector, key)
@@ -104,5 +104,3 @@ setmetatable(Dusk, {
 		return open .. str .. close
 	end
 })
-
-return Dusk
