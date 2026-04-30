@@ -124,6 +124,10 @@ local function copy(t)
 end
 
 return setmetatable(Dusk, {
+	--- returns a new collector with the style appended.
+	--- @param collector Dusk
+	--- @param key string
+	--- @return Dusk
 	__index = function(collector, key)
 		if (type(key) == "number") then
 			return rawget(collector, key)
@@ -139,6 +143,10 @@ return setmetatable(Dusk, {
 
 		return setmetatable(newCollector, getmetatable(collector))
 	end,
+	--- returns the styled string.
+	--- @param collector Dusk
+	--- @param str string
+	--- @return string
 	__call = function(collector, str)
 		local open, close = "", ""
 
