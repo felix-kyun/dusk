@@ -156,5 +156,6 @@ return setmetatable(Dusk, {
 		end
 
 		return open .. str .. close
-	end
+	end,
+	_codes = codes
 })
