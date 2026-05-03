@@ -3,30 +3,30 @@ local codes = getmetatable(d)._codes
 
 -- multi chaining
 assert(d.red.bold("test") == ""
-	.. codes.red.open
-	.. codes.bold.open
+	.. codes.red.enable
+	.. codes.bold.enable
 	.. "test"
-	.. codes.bold.close
-	.. codes.red.close,
+	.. codes.bold.disable
+	.. codes.red.disable,
 	"multi chaining")
 
 -- chain reuse
 local redBold = d.red.bold
 assert(redBold.strikethrough("test") == ""
-	.. codes.red.open
-	.. codes.bold.open
-	.. codes.strikethrough.open
+	.. codes.red.enable
+	.. codes.bold.enable
+	.. codes.strikethrough.enable
 	.. "test"
-	.. codes.strikethrough.close
-	.. codes.bold.close
-	.. codes.red.close,
+	.. codes.strikethrough.disable
+	.. codes.bold.disable
+	.. codes.red.disable,
 	"chain reuse strikethrough")
 assert(redBold.underline("test") == ""
-	.. codes.red.open
-	.. codes.bold.open
-	.. codes.underline.open
+	.. codes.red.enable
+	.. codes.bold.enable
+	.. codes.underline.enable
 	.. "test"
-	.. codes.underline.close
-	.. codes.bold.close
-	.. codes.red.close,
+	.. codes.underline.disable
+	.. codes.bold.disable
+	.. codes.red.disable,
 	"chain reuse")
