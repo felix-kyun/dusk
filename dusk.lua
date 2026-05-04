@@ -9,6 +9,7 @@
 ]]
 
 --- @class Dusk
+--- @overload fun(...: string) string
 --- @field reset 			Dusk
 --- @field bold 			Dusk
 --- @field dim 				Dusk
