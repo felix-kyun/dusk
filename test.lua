@@ -30,3 +30,12 @@ assert(redBold.underline("test") == ""
 	.. codes.bold.disable
 	.. codes.red.disable,
 	"chain reuse")
+
+-- multiple args
+assert(d.red.bold("test", "test2") == ""
+	.. codes.red.enable
+	.. codes.bold.enable
+	.. "test test2"
+	.. codes.bold.disable
+	.. codes.red.disable,
+	"multiple args")
