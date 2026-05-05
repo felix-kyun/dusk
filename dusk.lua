@@ -55,7 +55,7 @@
 --- @field bgMagentaBright 	Dusk
 --- @field bgCyanBright 	Dusk
 --- @field bgWhiteBright 	Dusk
-local Dusk = {}
+
 local codes = {
 	-- Modifiers
 	reset           = { enable = "\27[0m", disable = "\27[0m" },
@@ -124,7 +124,7 @@ local function copy(t)
 	return result
 end
 
-return setmetatable(Dusk, {
+return setmetatable({}, {
 	--- returns a new collector with the style appended.
 	--- @param collector Dusk
 	--- @param key string
@@ -160,4 +160,4 @@ return setmetatable(Dusk, {
 		return open .. target .. close
 	end,
 	_codes = codes
-})
+}) --[[ @as Dusk ]]
