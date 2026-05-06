@@ -62,7 +62,7 @@
 --- @field enable string
 --- @field disable string
 
---- @type table<string, Codeset>
+--- @type table<string, (function | Codeset)>
 local codes = {
 	--- mods
 	reset           = { enable = "\27[0m", disable = "\27[0m" },
@@ -118,11 +118,9 @@ local codes = {
 	bgMagentaBright = { enable = "\27[105m", disable = "\27[49m" },
 	bgCyanBright    = { enable = "\27[106m", disable = "\27[49m" },
 	bgWhiteBright   = { enable = "\27[107m", disable = "\27[49m" },
-}
 
-local helpers = {
 	--- fg rgb
-	rgb = function(collector)
+	rgb             = function(collector)
 		return function(r, g, b)
 			return collector + {
 				enable = ("\27[38;2;%d;%d;%dm"):format(r, g, b),
@@ -132,7 +130,7 @@ local helpers = {
 	end,
 
 	--- bg rgb
-	bgRgb = function(collector)
+	bgRgb           = function(collector)
 		return function(r, g, b)
 			return collector + {
 				enable = ("\27[48;2;%d;%d;%dm"):format(r, g, b),
@@ -162,13 +160,13 @@ return setmetatable({}, {
 			return rawget(collector, key)
 		end
 
-		if helpers[key] then
-			return helpers[key](collector)
-		end
-
 		if not codes[key] then
 			error("Dusk: unknown style '" .. key .. "'")
 			return collector
+		end
+
+		if type(codes[key]) == "function" then
+			return codes[key](collector)
 		end
 
 		return collector + codes[key]
