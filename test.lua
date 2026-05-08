@@ -58,3 +58,22 @@ assert(d.bgRgb(255, 0, 0)("test") == ""
 	.. "test"
 	.. bgRgb.disable,
 	"bgRgb")
+
+-- hex
+local hex = codes.hex(d)("#ff0000")[1]
+assert(hex.enable == ("\27[38;2;%d;%d;%dm"):format(255, 0, 0))
+assert(hex.disable == "\27[39m")
+assert(d.hex("#ff0000")("test") == ""
+	.. hex.enable
+	.. "test"
+	.. hex.disable,
+	"hex")
+
+local bgHex = codes.bgHex(d)("#ff0000")[1]
+assert(bgHex.enable == ("\27[48;2;%d;%d;%dm"):format(255, 0, 0))
+assert(bgHex.disable == "\27[49m")
+assert(d.bgHex("#ff0000")("test") == ""
+	.. bgHex.enable
+	.. "test"
+	.. bgHex.disable,
+	"bgHex")
