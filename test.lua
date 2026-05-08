@@ -42,8 +42,19 @@ assert(d.red.bold("test", "test2") == ""
 
 -- rgb
 local rgb = codes.rgb(d)(255, 0, 0)[1]
+assert(rgb.enable == ("\27[38;2;%d;%d;%dm"):format(255, 0, 0))
+assert(rgb.disable == "\27[39m")
 assert(d.rgb(255, 0, 0)("test") == ""
 	.. rgb.enable
 	.. "test"
 	.. rgb.disable,
 	"rgb")
+
+local bgRgb = codes.bgRgb(d)(255, 0, 0)[1]
+assert(bgRgb.enable == ("\27[48;2;%d;%d;%dm"):format(255, 0, 0))
+assert(bgRgb.disable == "\27[49m")
+assert(d.bgRgb(255, 0, 0)("test") == ""
+	.. bgRgb.enable
+	.. "test"
+	.. bgRgb.disable,
+	"bgRgb")
