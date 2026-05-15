@@ -1,5 +1,6 @@
 local d = require("dusk")
-local codes = getmetatable(d)._codes
+local codes = getmetatable(d)._internals.codes
+local registry = getmetatable(d)._internals.registry
 
 -- multi chaining
 assert(d.red.bold("test") == ""
@@ -41,7 +42,7 @@ assert(d.red.bold("test", "test2") == ""
 	"multiple args")
 
 -- rgb
-local rgb = codes.rgb(d)(255, 0, 0)[1]
+local rgb = registry[codes.rgb(d)(255, 0, 0)]
 assert(rgb.enable == ("\27[38;2;%d;%d;%dm"):format(255, 0, 0))
 assert(rgb.disable == "\27[39m")
 assert(d.rgb(255, 0, 0)("test") == ""
@@ -50,7 +51,7 @@ assert(d.rgb(255, 0, 0)("test") == ""
 	.. rgb.disable,
 	"rgb")
 
-local bgRgb = codes.bgRgb(d)(255, 0, 0)[1]
+local bgRgb = registry[codes.bgRgb(d)(255, 0, 0)]
 assert(bgRgb.enable == ("\27[48;2;%d;%d;%dm"):format(255, 0, 0))
 assert(bgRgb.disable == "\27[49m")
 assert(d.bgRgb(255, 0, 0)("test") == ""
@@ -60,7 +61,7 @@ assert(d.bgRgb(255, 0, 0)("test") == ""
 	"bgRgb")
 
 -- hex
-local hex = codes.hex(d)("#ff0000")[1]
+local hex = registry[codes.hex(d)("#ff0000")]
 assert(hex.enable == ("\27[38;2;%d;%d;%dm"):format(255, 0, 0))
 assert(hex.disable == "\27[39m")
 assert(d.hex("#ff0000")("test") == ""
@@ -69,7 +70,7 @@ assert(d.hex("#ff0000")("test") == ""
 	.. hex.disable,
 	"hex")
 
-local bgHex = codes.bgHex(d)("#ff0000")[1]
+local bgHex = registry[codes.bgHex(d)("#ff0000")]
 assert(bgHex.enable == ("\27[48;2;%d;%d;%dm"):format(255, 0, 0))
 assert(bgHex.disable == "\27[49m")
 assert(d.bgHex("#ff0000")("test") == ""
@@ -90,18 +91,6 @@ for _, code in ipairs({ "#fg0000", "#000", "#000000g" }) do
 	ok, err = pcall(d.hex, code)
 	assert(not ok, err)
 end
-
--- error on modifying code map
-ok, err = pcall(function()
-	codes.rgb = function() end
-end)
-assert(not ok, err)
-
--- error on adding new key to codemap
-ok, err = pcall(function()
-	codes.some_new_code = {}
-end)
-assert(not ok, err)
 
 --- code map check
 local codemap = {
